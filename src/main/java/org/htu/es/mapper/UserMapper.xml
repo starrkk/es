@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.htu.es.mapper.UserMapper">
+	<resultMap type="org.htu.es.pojo.User" id="user">
+	<id column="id" property="id" jdbcType="BIGINT" />
+	<result column="name" property="name" jdbcType="VARCHAR" />
+	<result column="qq" property="qq" jdbcType="VARCHAR" />
+	<result column="role" property="role" jdbcType="VARCHAR" />
+	<result column="phone" property="phone" jdbcType="VARCHAR" />
+	<result column="IDNumber" property="IDNumber" jdbcType="VARCHAR" />
+	<result column="examtype" property="examtype" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	
+	<!-- 考试报名/注册 -->
+	<insert id="register"  parameterType="org.htu.es.pojo.User">
+		insert into tb_user
+		(
+			id,
+			name,
+			<if test="qq !=null ">
+			qq,
+			</if>
+			<if test="phone != null ">
+			role,
+			phone,
+			</if>
+			IDNumber,
+			examtype
+		)
+		values
+		(	
+			#{id,jdbcType=BIGINT},
+			#{name,jdbcType=VARCHAR},
+			<if test="qq != null">
+				#{qq,jdbcType=VARCHAR},
+			</if>
+			#{role,jdbcType=VARCHAR},
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			#{IDNumber,jdbcType=VARCHAR},
+			#{examtype,jdbcType=VARCHAR}	
+		)
+	
+	</insert>
+	
+	<!-- 根据考生身份证号查询考生准考证号 -->
+	<select id="getIdByIDNumber" resultType="long" parameterType="java.lang.String">
+		select id
+		from 
+			tb_user
+		where
+			IDNumber = #{IDNumber,jdbcType=VARCHAR}
+	
+	</select>
+	
+	<!-- 判断用户是否存在 -->
+	<select id="countUser" resultType="int" parameterType="java.lang.String">
+		select count(*)
+		from tb_user
+		where
+		IDNumber = #{IDNumber,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 登录考试 -->
+	<select id="login" resultMap="user"  parameterType="long">
+		select
+		id,
+		name,
+		qq,
+		phone,
+		IDNumber,
+		examtype
+		from tb_user u
+		where u.id=#{id,jdbcType=BIGINT}
+	
+	</select>
+
+
+</mapper>

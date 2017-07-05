@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.htu.es.mapper.ManageMapper">
+	<resultMap type="org.htu.es.pojo.Manage" id="manage">
+	<id column="id" property="id"/>
+	<result column="username" property="username" jdbcType="VARCHAR" />
+	<result column="password" property="password" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 验证管理员密码 -->
+	<select id="verify" resultMap="manage" parameterType="java.lang.String">
+		select *
+		from tb_manage
+		where
+		username = #{username,jdbcType=VARCHAR}
+	</select>
+</mapper>
